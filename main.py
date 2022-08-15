@@ -1,3 +1,4 @@
+from configparser import DuplicateSectionError
 import pygame
 import random
 import math
@@ -43,14 +44,17 @@ class DrawInformation: #global values, better to use a class instead of global v
         #start drawing blocks from x coord considering side pad space
         self.start_x = self.SIDE_PAD // 2
 
-def draw(draw_info):
+def draw(draw_info, algorithm_name, ascending):
     draw_info.window.fill(draw_info.BACKGROUND)
 
+    title = draw_info.FONT.render(f"{algorithm_name} - {'Ascending' if ascending else 'Descending'}", 1, draw_info.GREEN)
+    draw_info.window.blit(title, (draw_info.width/2 - title.get_width()/2 ,5))
+
     controls = draw_info.FONT.render("R - Reset | SPACE - Start sorting | A - Ascending | D - Descending", 1, draw_info.BLACK)
-    draw_info.window.blit(controls, (draw_info.width/2 - controls.get_width()/2 ,5))
+    draw_info.window.blit(controls, (draw_info.width/2 - controls.get_width()/2 ,35))
 
     sorting = draw_info.FONT.render("I - Insertion Sort | B - Bubble Sort", 1, draw_info.BLACK)
-    draw_info.window.blit(sorting, (draw_info.width/2 - sorting.get_width()/2 ,35))
+    draw_info.window.blit(sorting, (draw_info.width/2 - sorting.get_width()/2 ,65))
 
     draw_list(draw_info)
     pygame.display.update()
@@ -102,6 +106,28 @@ def bubble_sort(draw_info, ascending = True):
                 yield True #yield makes function a generator
     return lst
 
+def insertion_sort(draw_info, ascending = True):
+    """Implements Insertion Sort algorithm"""
+    lst = draw_info.lst
+    for i in range(1, len(lst)):
+        current = lst[i]
+
+        while True:
+            ascending_sort = i > 0 and lst[i - 1] > current and ascending
+            descending_sort = i > 0 and lst[i-1] < current and not ascending
+
+            if not ascending_sort and not descending_sort:
+                break
+
+            #swaps
+            lst[i] = lst[i - 1]
+            i = i-1
+            lst[i] = current
+            draw_list(draw_info, {i: draw_info.GREEN, i - 1: draw_info.RED}, True)
+            yield True
+
+    return lst
+
 
 def main():
     """Main event loop"""
@@ -123,6 +149,7 @@ def main():
 
     while run:
         clock.tick(60) #max number of times this loop can run per second
+        #to speed up sorting speed increase clock tick
 
         if sorting: #if currently sorting
             try: #try to call next method
@@ -130,10 +157,10 @@ def main():
             except StopIteration: #generator is done
                 sorting = False
         else:
-            draw(draw_info)
+            draw(draw_info, sorting_algorithm_name, ascending)
 
-        draw(draw_info)
-        pygame.display.update() #render display
+        #draw(draw_info)
+        #pygame.display.update() #render display
 
         for event in pygame.event.get(): #returns list of all the events that have occured since the last loop call
             if event.type == pygame.QUIT:
@@ -155,6 +182,13 @@ def main():
                 ascending = True
             elif event.key == pygame.K_d and not sorting:
                 ascending = False
+                
+            elif event.key == pygame.K_b and not sorting:
+                sorting_algorithm = bubble_sort
+                sorting_algorithm_name = "Bubble Sort"
+            elif event.key == pygame.K_i and not sorting:
+                sorting_algorithm = insertion_sort
+                sorting_algorithm_name = "Insertion Sort"
 
 
     pygame.quit()
