@@ -22,10 +22,10 @@ Upon running this code, a pygame window will pop up with a bar graph of the rand
 
 ## Usage
 Before sorting...
-![](Images/Screenshot (128).png)
+![](Images/Screenshot%20(128).png)
 
 After sorting...
-![](Images/Screenshot (129).png)
+![](Images/Screenshot%20(129).png)
 
 ## Credits
 
