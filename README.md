@@ -21,14 +21,11 @@ Upon running this code, a pygame window will pop up with a bar graph of the rand
 4. Install PyGame --> pip install pygame
 
 ## Usage
+Before sorting...
+![](Images/Screenshot (128).png)
 
-Provide instructions and examples for use. Include screenshots as needed.
-
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
-
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+After sorting...
+![](Images/Screenshot (129).png)
 
 ## Credits
 
