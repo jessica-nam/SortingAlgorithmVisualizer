@@ -19,8 +19,8 @@ class DrawInformation: #global values, better to use a class instead of global v
         (192, 192, 192)
     ]
 
-    FONT = pygame.font.SysFont('comicsans', 20)
-    LARGE_FONT = pygame.font.SysFont('comicsans', 30)
+    FONT = pygame.font.SysFont('Times New Roman', 20)
+    LARGE_FONT = pygame.font.SysFont('Times New Roman', 30)
 
     def __init__(self, width, height, lst): #lst is the starting list to sort
         self.width = width 
@@ -47,7 +47,7 @@ class DrawInformation: #global values, better to use a class instead of global v
 def draw(draw_info, algorithm_name, ascending):
     draw_info.window.fill(draw_info.BACKGROUND)
 
-    title = draw_info.FONT.render(f"{algorithm_name} - {'Ascending' if ascending else 'Descending'}", 1, draw_info.GREEN)
+    title = draw_info.FONT.render(f"{algorithm_name} - {'Ascending' if ascending else 'Descending'}", 1, draw_info.BLACK)
     draw_info.window.blit(title, (draw_info.width/2 - title.get_width()/2 ,5))
 
     controls = draw_info.FONT.render("R - Reset | SPACE - Start sorting | A - Ascending | D - Descending", 1, draw_info.BLACK)
@@ -102,7 +102,7 @@ def bubble_sort(draw_info, ascending = True):
 
             if (num1 > num2 and ascending) or (num1 < num2 and not ascending):
                 lst[j], lst[j + 1] = lst [j + 1], lst[j] #swap
-                draw_list(draw_info, {j: draw_info.GREEN, j + 1: draw_info.RED}, True)
+                draw_list(draw_info, {j: draw_info.BLACK, j + 1: draw_info.BLACK}, True)
                 yield True #yield makes function a generator
     return lst
 
@@ -123,7 +123,7 @@ def insertion_sort(draw_info, ascending = True):
             lst[i] = lst[i - 1]
             i = i-1
             lst[i] = current
-            draw_list(draw_info, {i: draw_info.GREEN, i - 1: draw_info.RED}, True)
+            draw_list(draw_info, {i: draw_info.BLACK, i - 1: draw_info.BLACK}, True)
             yield True
 
     return lst
@@ -182,7 +182,7 @@ def main():
                 ascending = True
             elif event.key == pygame.K_d and not sorting:
                 ascending = False
-                
+
             elif event.key == pygame.K_b and not sorting:
                 sorting_algorithm = bubble_sort
                 sorting_algorithm_name = "Bubble Sort"
